@@ -36,7 +36,7 @@ export const SimplifierProvider = ({children}) => {
     }
 
     return (
-    <SimplifierContext.Provider value={{simplifiedText, loading, downloadFile, getSimplifiedText, setSimplifiedText}}>
+    <SimplifierContext.Provider value={{simplifiedText, loading, downloadFile, getSimplifiedText, setSimplifiedText, fileOriginalName}}>
       {children}
     </SimplifierContext.Provider>
     )
