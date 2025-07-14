@@ -8,6 +8,7 @@ const service =  new SimplifierService();
 
 export const SimplifierProvider = ({children}) => {
     const [ fileName, setFileName ] = useState(null);
+    const [ fileOriginalName, setFileOriginalName ] = useState(null);
     const [ simplifiedText, setSimplifiedText ] = useState("");
     const [ loading, setLoading ] = useState(false);
 
@@ -18,6 +19,7 @@ export const SimplifierProvider = ({children}) => {
             const response = await service.getSimplifiedText(file);
             setSimplifiedText(response.text);
             setFileName(response.filename);
+            setFileOriginalName(response.fileOriginalName);
         } catch (err) {
             console.error("Error fetching simplified text:", err);
         } finally {
@@ -27,14 +29,14 @@ export const SimplifierProvider = ({children}) => {
 
     const downloadFile = async () => {
         try {
-            await service.dowloadFile(fileName);
+            await service.dowloadFile(fileName, fileOriginalName);
         } catch (err) {
             console.error("Error downloading file:", err);
         }
     }
 
     return (
-    <SimplifierContext.Provider value={{simplifiedText, loading, downloadFile, getSimplifiedText}}>
+    <SimplifierContext.Provider value={{simplifiedText, loading, downloadFile, getSimplifiedText, setSimplifiedText}}>
       {children}
     </SimplifierContext.Provider>
     )

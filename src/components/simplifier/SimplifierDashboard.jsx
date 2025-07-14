@@ -1,10 +1,17 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import SimplifierContext from './context/SimplifierContext.context';
+import Spinner from '../core/Spinner';
+import Markdown from 'react-markdown';
+import html2pdf  from 'html2pdf.js';
 
 export default function SimplifierDashboard() {
 
-  const { getSimplifiedText, simplifiedText, downloadFile } = useContext(SimplifierContext);
+  const { getSimplifiedText, simplifiedText, downloadFile, loading, setSimplifiedText} = useContext(SimplifierContext);
   const [ file, setFile ] = useState(null);
+
+  useEffect(() => {
+    if (!file) setSimplifiedText("");
+  }, [file])
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -13,9 +20,8 @@ export default function SimplifierDashboard() {
     console.log("File Selected: ", file);
 
     setFile(formData);
-
-
   }
+
   const handleUpload =  (event) => {
     event.preventDefault();
 
@@ -29,7 +35,12 @@ export default function SimplifierDashboard() {
 
   const handleDowload = (event) => {
     event.preventDefault();
-    downloadFile();
+    // downloadFile();
+
+    html2pdf(document.getElementById("simplified-text"), {
+      margin: 20,    
+      filename: "Simplified_Text.pdf",
+    })
   }
 
   return (
@@ -38,11 +49,9 @@ export default function SimplifierDashboard() {
         <form>
             <input type="file" name="pdfFile" accept="application/pdf" onChange={handleFileChange}/>
             <button type="submit" onClick={handleUpload}>Simplify</button>
-            {!!file && <button type="submit" onClick={handleDowload}> Dowload File</button>}
+            {(!!file && !!simplifiedText) && <button type="submit" onClick={handleDowload}> Dowload File</button>}
         </form>
-        <div>
-            {!!simplifiedText ? simplifiedText : "No text to display"}
-        </div>
+        {!!loading ? <Spinner /> : <div id="simplified-text"> {!!simplifiedText ? <Markdown>{simplifiedText}</Markdown> : "No text to display"}</div>}
     </div>
   )
 }

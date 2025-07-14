@@ -21,13 +21,13 @@ export default class SimplifierService {
         });
     }
 
-    dowloadFile(fileName) { 
+    dowloadFile(fileName, originalName) { 
         return this.service.get(`/download/${fileName}`, {responseType: 'blob'})
             .then((response) => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.setAttribute('href', url);
-                link.setAttribute('download', fileName + ".pdf");
+                link.setAttribute('download', originalName + "_Simplified.pdf");
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
