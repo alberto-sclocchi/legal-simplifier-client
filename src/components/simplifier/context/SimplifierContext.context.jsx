@@ -21,7 +21,7 @@ export const SimplifierProvider = ({children}) => {
             setFileName(response.filename);
             setFileOriginalName(response.fileOriginalName);
         } catch (err) {
-            console.error("Error fetching simplified text:", err);
+            console.log("Error fetching simplified text:", err);
         } finally {
             setLoading(false);
         }
@@ -31,7 +31,7 @@ export const SimplifierProvider = ({children}) => {
         try {
             await service.dowloadFile(fileName, fileOriginalName);
         } catch (err) {
-            console.error("Error downloading file:", err);
+            console.log("Error downloading file:", err);
         }
     }
 

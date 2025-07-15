@@ -44,18 +44,19 @@ html{
 }
 
 .file-upload-div{
+  height: 8vh;
   display: flex;
   align-items: center;
   cursor: pointer;
   gap: 1vw;
-  padding: 0.2vw 1vw;
+  padding: 0 1vw;
   border: 0.2vw solid #000;
   border-radius: 10px;
   box-shadow: 0.5vw 0.5vw 0.2vw rgba(0, 0, 0, 0.2);
 }
 
 .file-upload-div img{
-  width: 3vw;
+  width: 2.5vw;
 }
 
 span{
@@ -85,7 +86,7 @@ span{
 }
 
 .dashboard-btn{
-  height: 4vw;
+  height: 8vh;
   padding: 1vw 1.5vw;
   font-size: 1.5rem;
   text-transform: uppercase;
@@ -101,4 +102,9 @@ h1, h2, h3, h4, h5, h6 {
 
 h1, h2, h3, h4, h5, h6{
   font-size: 1.5rem;
+}
+
+.title{
+  font-size: 2.2rem;
+  text-decoration: underline;
 }

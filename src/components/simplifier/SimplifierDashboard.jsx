@@ -9,6 +9,7 @@ export default function SimplifierDashboard() {
 
   const { getSimplifiedText, simplifiedText, downloadFile, loading, setSimplifiedText, fileOriginalName} = useContext(SimplifierContext);
   const [ file, setFile ] = useState(null);
+  const [ error, setError ] = useState(null);
 
   useEffect(() => {
     if (!file) setSimplifiedText("");
@@ -39,7 +40,12 @@ export default function SimplifierDashboard() {
     event.preventDefault();
 
     if (!file) {
-      alert("No file selected");
+      setError("Please select a file to upload.");
+
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
+      
       return;
     }
 
@@ -64,7 +70,12 @@ export default function SimplifierDashboard() {
     <div className="simplifier-dashboard">
         <h1 className='title'>AI Legal Simplifier</h1>
         <form>
-            {!!file ? <span style={{color: "blue", cursor:"pointer"}} onClick={handleUploadedFileDownload}>({file.name})</span> : <span></span>}
+            {!!error ?
+            <span>{error}</span>
+            : !!file 
+            ? <span style={{color: "blue", cursor:"pointer"}} onClick={handleUploadedFileDownload}>({file.name})</span> 
+            : <span></span>
+            }
             <label className="file-upload-div" style={!!file ? {backgroundColor: "lightgreen"} : {backgroundColor: "whitesmoke"}}>
                 <img src={uploadIcon} alt="upload-icon"/>
                 <h3>Upload PDF</h3>
