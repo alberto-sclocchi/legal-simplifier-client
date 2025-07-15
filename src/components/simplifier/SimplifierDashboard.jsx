@@ -4,6 +4,8 @@ import Spinner from '../core/Spinner';
 import Markdown from 'react-markdown';
 import html2pdf  from 'html2pdf.js';
 import uploadIcon from '../../images/upload-icon.png'; 
+import RoutesIndex from '../core/RoutesIndex';
+import SimplifiedTextContainer from './SimplifiedTextContainer';
 
 export default function SimplifierDashboard() {
 
@@ -45,7 +47,7 @@ export default function SimplifierDashboard() {
       setTimeout(() => {
         setError(null);
       }, 3000);
-      
+
       return;
     }
 
@@ -61,7 +63,7 @@ export default function SimplifierDashboard() {
     // downloadFile();
 
     html2pdf(document.getElementById("simplified-text"), {
-      margin: 15,    
+      margin: 20,    
       filename: `${fileOriginalName}_Simplified_Text.pdf`,
     })
   }
@@ -71,7 +73,7 @@ export default function SimplifierDashboard() {
         <h1 className='title'>AI Legal Simplifier</h1>
         <form>
             {!!error ?
-            <span>{error}</span>
+            <span style={{color: "brown", textDecoration:"underline"}}>{error}</span>
             : !!file 
             ? <span style={{color: "blue", cursor:"pointer"}} onClick={handleUploadedFileDownload}>({file.name})</span> 
             : <span></span>
@@ -82,7 +84,7 @@ export default function SimplifierDashboard() {
                 <input style={{display:"none"}} type="file" name="pdfFile" accept="application/pdf" onChange={handleFileChange}/>
             </label>
         </form>
-        <div className={`simplified-text-container ${!!loading && "simplified-text-container-loading"}`}>{!!loading ? <Spinner /> : <div id="simplified-text"> {!!simplifiedText ? <Markdown>{simplifiedText}</Markdown> :  "Upload a PDF file and click Simplify to get an easy-to-read summary."}</div>}</div>
+        <SimplifiedTextContainer />
         <div className="simplifier-dashboard-buttons">
             <button className="file-upload-div dashboard-btn" type="submit" onClick={handleUpload}>Simplify</button>
             <button style={!!file && !!simplifiedText ? {cursor: "pointer"} : {cursor: "not-allowed"}} className="file-upload-div dashboard-btn" type="submit" onClick={!!file && !!simplifiedText ? handleDowload : () => console.log("Button Disabled")}> Download File</button>
