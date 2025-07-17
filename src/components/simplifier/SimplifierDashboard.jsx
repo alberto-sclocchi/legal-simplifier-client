@@ -1,16 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import SimplifierContext from './context/SimplifierContext.context';
-import Spinner from '../core/Spinner';
-import Markdown from 'react-markdown';
 import html2pdf  from 'html2pdf.js';
 import uploadIcon from '../../images/upload-icon.png'; 
-import RoutesIndex from '../core/RoutesIndex';
 import SimplifiedTextContainer from './SimplifiedTextContainer';
 import BlockScreen from '../core/BlockScreen';
 
 export default function SimplifierDashboard() {
 
-  const { getSimplifiedText, simplifiedText, downloadFile, loading, setSimplifiedText, fileOriginalName, unlockSimplifier, isLocked} = useContext(SimplifierContext);
+  const { getSimplifiedText, simplifiedText, setSimplifiedText, fileOriginalName, isLocked} = useContext(SimplifierContext);
   const [ file, setFile ] = useState(null);
   const [ error, setError ] = useState(null);
 
@@ -22,7 +19,7 @@ export default function SimplifierDashboard() {
 
   const handleUploadedFileDownload = () => {
     const url = URL.createObjectURL(new Blob ([file]));
-    console.log("File URL: ", url);
+    // console.log("File URL: ", url);
     const link = document.createElement('a');
     link.setAttribute('href', url);
     link.setAttribute('download', file.name);
@@ -80,7 +77,7 @@ export default function SimplifierDashboard() {
             <h1 className='title'>AI Legal Simplifier</h1>
             <form>
                 {!!error ?
-                <span style={{color: "brown", textDecoration:"underline"}}>{error}</span>
+                <span className="error-message" style={{color: "brown", textDecoration:"underline"}}>{error}</span>
                 : !!file 
                 ? <span style={{color: "blue", cursor:"pointer"}} onClick={handleUploadedFileDownload}>({file.name})</span> 
                 : <span></span>
