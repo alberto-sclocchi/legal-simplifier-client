@@ -5,7 +5,7 @@ import SimplifierDashboard from '../simplifier/SimplifierDashboard'
 export default function RoutesIndex() {
   return (
     <Routes>
-        <Route path="/" element={<SimplifierDashboard />} />
+        <Route path="/*" element={<SimplifierDashboard />} />
     </Routes>
   )
 }

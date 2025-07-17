@@ -4,6 +4,8 @@ import SimplifierService from "../service/SimplifierService";
 
 const SimplifierContext = createContext({});
 const service =  new SimplifierService();
+const PASSWORD_SIMPLIFIER = "legal2005";
+
 
 
 export const SimplifierProvider = ({children}) => {
@@ -11,6 +13,8 @@ export const SimplifierProvider = ({children}) => {
     const [ fileOriginalName, setFileOriginalName ] = useState(null);
     const [ simplifiedText, setSimplifiedText ] = useState("");
     const [ loading, setLoading ] = useState(false);
+    const [ errorLock, setErrorLock ] = useState(null);
+    const [ isLocked, setIsLocked ] = useState(true);
 
     const getSimplifiedText = async (file) => {
         setLoading(true);
@@ -35,8 +39,26 @@ export const SimplifierProvider = ({children}) => {
         }
     }
 
+    const unlockSimplifier = (password) => {
+        if(!password || password !== PASSWORD_SIMPLIFIER) {
+            console.log("Incorrect password");
+            setErrorLock("Incorrect password. Please try again.");
+
+            setTimeout(() => {
+                setErrorLock(null);
+            }, 3000);
+
+            return;
+        }
+
+        setIsLocked(false);
+        setErrorLock(null);
+
+        
+    }
+
     return (
-    <SimplifierContext.Provider value={{simplifiedText, loading, downloadFile, getSimplifiedText, setSimplifiedText, fileOriginalName}}>
+    <SimplifierContext.Provider value={{simplifiedText, loading, downloadFile, getSimplifiedText, setSimplifiedText, fileOriginalName, unlockSimplifier, isLocked, errorLock}}>
       {children}
     </SimplifierContext.Provider>
     )
