@@ -13,14 +13,27 @@ export const SimplifierProvider = ({children}) => {
     const [ fileOriginalName, setFileOriginalName ] = useState(null);
     const [ simplifiedText, setSimplifiedText ] = useState("");
     const [ loading, setLoading ] = useState(false);
-    const [ errorLock, setErrorLock ] = useState(null);
     const [ isLocked, setIsLocked ] = useState(true);
+    const [ errorMessage, setErrorMessage ] = useState(null);
 
     const getSimplifiedText = async (file) => {
+        if(!file){
+            setErrorMessage("File not uploaded. Please try again.");
+
+            setTimeout(() => {
+                setErrorMessage(null)
+            }, 3000);
+
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("pdfFile", file);
+        
         setLoading(true);
 
         try {
-            const response = await service.getSimplifiedText(file);
+            const response = await service.getSimplifiedText(formData);
             setSimplifiedText(response.text);
             setFileName(response.filename);
             setFileOriginalName(response.fileOriginalName);
@@ -42,23 +55,23 @@ export const SimplifierProvider = ({children}) => {
     const unlockSimplifier = (password) => {
         if(!password || password !== PASSWORD_SIMPLIFIER) {
             console.log("Incorrect password");
-            setErrorLock("Incorrect password. Please try again.");
+            setErrorMessage("Incorrect password. Please try again.");
 
             setTimeout(() => {
-                setErrorLock(null);
+                setErrorMessage(null);
             }, 3000);
 
             return;
         }
 
         setIsLocked(false);
-        setErrorLock(null);
+        setErrorMessage(null);
 
         
     }
 
     return (
-    <SimplifierContext.Provider value={{simplifiedText, loading, downloadFile, getSimplifiedText, setSimplifiedText, fileOriginalName, unlockSimplifier, isLocked, errorLock}}>
+    <SimplifierContext.Provider value={{simplifiedText, loading, downloadFile, getSimplifiedText, setSimplifiedText, fileOriginalName, unlockSimplifier, isLocked, errorMessage}}>
       {children}
     </SimplifierContext.Provider>
     )

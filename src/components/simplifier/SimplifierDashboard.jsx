@@ -5,54 +5,14 @@ import uploadIcon from '../../images/upload-icon.png';
 import SimplifiedTextContainer from './SimplifiedTextContainer';
 import BlockScreen from '../core/BlockScreen';
 
-export default function SimplifierDashboard() {
+export default function SimplifierDashboard({file}) {
 
-  const { getSimplifiedText, simplifiedText, setSimplifiedText, fileOriginalName, isLocked} = useContext(SimplifierContext);
-  const [ file, setFile ] = useState(null);
-  const [ error, setError ] = useState(null);
-
-  useEffect(() => {
-    if (!file) setSimplifiedText("");
-    console.log("File changed: ", file);
-  }, [file])
-
-
-  const handleUploadedFileDownload = () => {
-    const url = URL.createObjectURL(new Blob ([file]));
-    // console.log("File URL: ", url);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', file.name);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }
-
-  const handleFileChange = (event) => {
-    const fileUploaded = event.target.files[0];
-    setFile(fileUploaded);
-
-    console.log("File Selected: ", fileUploaded);
-  }
+  const { getSimplifiedText, simplifiedText, fileOriginalName} = useContext(SimplifierContext);
 
   const handleUpload =  (event) => {
     event.preventDefault();
 
-    if (!file) {
-      setError("Please select a file to upload.");
-
-      setTimeout(() => {
-        setError(null);
-      }, 3000);
-
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("pdfFile", file);
-
-    getSimplifiedText(formData);
+    getSimplifiedText(file);
     console.log("File Uploaded: ", file);
   }
 
@@ -67,33 +27,12 @@ export default function SimplifierDashboard() {
   }
 
   return (
-    <> 
-        {
-            isLocked &&
-            <BlockScreen />
-        }
-
-        <div className="simplifier-dashboard">
-            <h1 className='title'>AI Legal Simplifier</h1>
-            <form>
-                {!!error ?
-                <span className="error-message" style={{color: "brown", textDecoration:"underline"}}>{error}</span>
-                : !!file 
-                ? <span style={{color: "blue", cursor:"pointer"}} onClick={handleUploadedFileDownload}>({file.name})</span> 
-                : <span></span>
-                }
-                <label className="file-upload-div" style={!!file ? {backgroundColor: "lightgreen"} : {backgroundColor: "whitesmoke"}}>
-                    <img src={uploadIcon} alt="upload-icon"/>
-                    <h3>Upload PDF</h3>
-                    <input style={{display:"none"}} type="file" name="pdfFile" accept="application/pdf" onChange={handleFileChange}/>
-                </label>
-            </form>
-            <SimplifiedTextContainer />
-            <div className="simplifier-dashboard-buttons">
-                <button className="file-upload-div dashboard-btn" type="submit" onClick={handleUpload}>Simplify</button>
-                <button style={!!file && !!simplifiedText ? {cursor: "pointer"} : {cursor: "not-allowed"}} className="file-upload-div dashboard-btn" type="submit" onClick={!!file && !!simplifiedText ? handleDowload : () => console.log("Button Disabled")}> Download File</button>
-            </div>
+    <div className='simplifier-dashboard'>
+        <SimplifiedTextContainer />
+        <div className="simplifier-dashboard-buttons">
+            <button className="file-upload-div dashboard-btn" type="submit" onClick={handleUpload}>Simplify</button>
+            <button style={!!file && !!simplifiedText ? {cursor: "pointer"} : {cursor: "not-allowed"}} className="file-upload-div dashboard-btn" type="submit" onClick={!!file && !!simplifiedText ? handleDowload : () => console.log("Button Disabled")}> Download File</button>
         </div>
-    </>
+    </div>
   )
 }

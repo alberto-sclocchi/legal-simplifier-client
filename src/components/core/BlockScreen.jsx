@@ -9,7 +9,7 @@ export default function BlockScreen() {
   const [ isView, setIsView ] = useState(false);
 
 
-  const {unlockSimplifier, errorLock} = useContext(SimplifierContext);
+  const {unlockSimplifier, errorMessage, isLocked} = useContext(SimplifierContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -22,7 +22,7 @@ export default function BlockScreen() {
     <div  id="block-screen">
         <h1 className="title">AI Legal Simplifier</h1>
         <form>
-            {!!errorLock ? <span style={{textDecoration:"underline"}} className='error-message'>{errorLock && errorLock}</span> : <span></span>}
+            {(!!errorMessage && !!isLocked) ? <span style={{textDecoration:"underline"}} className='error-message'>{errorMessage && errorMessage}</span> : <span></span>}
             <div>
                 <input type={isView ? "text" : "password"} name="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder='Insert Password'/>
                 <button type="button" onClick={() => setIsView(!isView)}><img src={isView ? noViewIcon : viewIcon} className={!!isView ? "view-img" : "no-view-img"} alt="view-icon" /></button>

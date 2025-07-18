@@ -1,11 +1,11 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import SimplifierDashboard from '../simplifier/SimplifierDashboard'
+import LegalSimplifier from '../simplifier/LegalSimplifier'
 
 export default function RoutesIndex() {
   return (
     <Routes>
-        <Route path="/*" element={<SimplifierDashboard />} />
+        <Route path="/*" element={<LegalSimplifier />} />
     </Routes>
   )
 }

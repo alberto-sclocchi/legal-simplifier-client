@@ -34,7 +34,7 @@ export default function SimplifiedTextContainer() {
     }, [displayText])
 
   return (
-    <div ref={ref} className={`simplified-text-container ${!!loading && "simplified-text-container-loading"}`}>{!!loading ? <Spinner /> : <div id="simplified-text"> {!!simplifiedText ? <Markdown>{displayText}</Markdown> :  "Upload a PDF file and click Simplify to get an easy-to-read summary."}</div>}</div>
+    <div ref={ref} className={`simplified-text-container ${!!loading && "simplified-text-container-loading"}`}>{!!loading ? <Spinner /> : <div id="simplified-text"> {!!simplifiedText ? <Markdown>{displayText}</Markdown> :  "Upload a PDF file and click Simplify to get an easy-to-read summary. Only upload legal documents."}</div>}</div>
   )
 }
 
