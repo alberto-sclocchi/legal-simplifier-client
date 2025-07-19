@@ -15,7 +15,7 @@ export default function SimplifiedTextContainer({props}) {
 
   const { model } = props;
 
-  const hasTyped = SimplifierModel.simplifier === model ? props.hasTyped : props.hasTypedAnswer
+  const hasTyped = SimplifierModel.simplifier === model ? props.hasTypedSimplified : props.hasTypedAnswer
 
   useEffect(() => {
     if(!!simplifiedText && !loading && !hasTyped.current &&  model === SimplifierModel.simplifier){

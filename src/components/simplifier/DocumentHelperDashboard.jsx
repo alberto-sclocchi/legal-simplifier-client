@@ -15,15 +15,13 @@ export default function DocumentHelperDashboard({file}) {
     type: InputType.text,
     index: 0
   })
-
   const [ question, setQuestion ] = useState("");
+  const [ isRecording, setIsRecording ] = useState(false);
 
   const handleClick = (event) => {
     event.preventDefault();
 
     hasTypedAnswer.current = false;
-
-
     getAnswer(question, file);
   }
 
@@ -42,8 +40,8 @@ export default function DocumentHelperDashboard({file}) {
                 <input type='text' onChange={(e) => setQuestion(e.target.value)} placeholder='What would you like to know?'/> 
                 : 
                 <>
-                    <FaCircleStop />
-                    <FaMicrophone /> 
+                    <div className='timer'>hello</div>
+                    {!isRecording ? <button className='mic-icon'><FaMicrophone /></button> : <FaCircleStop className='mic-icon'/>} 
                 </>
                 }
 

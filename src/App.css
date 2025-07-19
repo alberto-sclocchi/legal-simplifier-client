@@ -56,14 +56,14 @@ html{
   font-family: 'Inter';
 }
 
-.document-helper-dashboard form button{
-  width: 8%;
+.document-helper-btn{
+  width: 12%;
   height: 100%;
   border: 0.2vw solid black;
   box-shadow: 0.2vw 0.2vw 0.2vw rgba(0, 0, 0, 0.2);
   border-radius: 0px 10px 10px 0px;
   background-color: rgb(113, 46, 46);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-family: 'Bebas Neue';
   font-weight: 900;
   color: whitesmoke;
@@ -299,4 +299,27 @@ input:focus {
   flex-direction: row;
   border: 0.2vw solid black;
   border-radius: 10px;
+}
+
+.timer{
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  height: 100%;
+  border-radius: 10px 0 0 10px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 0 2vw;
+  border: 0.2vw solid black;
+  box-shadow: 0.2vw 0.2vw 0.2vw rgba(0, 0, 0, 0.2);
+  color: whitesmoke;
+  box-sizing: border-box;
+}
+
+.mic-icon{
+  font-size: 1.5rem;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  height: 100%;
 }

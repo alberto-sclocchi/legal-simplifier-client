@@ -34,7 +34,7 @@ export default function SimplifierDashboard({file}) {
 
   return (
     <div className='simplifier-dashboard'>
-        <SimplifiedTextContainer props={{model: SimplifierModel.simplifier, hasTyped: hasTypedSimplified}}/>
+        <SimplifiedTextContainer props={{model: SimplifierModel.simplifier, hasTypedSimplified}}/>
         <div className="simplifier-dashboard-buttons">
             <button className="file-upload-div dashboard-btn" type="submit" onClick={handleUpload}>Simplify</button>
             <button style={!!file && !!simplifiedText ? {cursor: "pointer"} : {cursor: "not-allowed"}} className="file-upload-div dashboard-btn" type="submit" onClick={!!file && !!simplifiedText ? handleDowload : () => console.log("Button Disabled")}> Download File</button>
