@@ -314,12 +314,19 @@ input:focus {
   box-shadow: 0.2vw 0.2vw 0.2vw rgba(0, 0, 0, 0.2);
   color: whitesmoke;
   box-sizing: border-box;
+  font-size: 1.5rem;
 }
 
+
 .mic-icon{
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   background-color: transparent;
   cursor: pointer;
   border: none;
   height: 100%;
+  transition: scale 0.2s ease-in-out;
+}
+
+.mic-icon:hover{
+  scale: 1.2;
 }

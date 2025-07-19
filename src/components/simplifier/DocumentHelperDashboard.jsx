@@ -17,12 +17,40 @@ export default function DocumentHelperDashboard({file}) {
   })
   const [ question, setQuestion ] = useState("");
   const [ isRecording, setIsRecording ] = useState(false);
+  const [ seconds, setSeconds ] = useState(0);
+
 
   const handleClick = (event) => {
     event.preventDefault();
 
     hasTypedAnswer.current = false;
     getAnswer(question, file);
+  }
+
+
+  const handleStart = (event) => {
+    event.preventDefault()
+    setIsRecording(true);
+    setSeconds(0);
+
+    const timer = setInterval(() => {
+      setSeconds((prevState) => prevState + 1);
+    }, 1000)
+    
+
+  }  
+  
+  const handleStop = (event) => {
+    event.preventDefault()
+    setIsRecording(false);
+  }
+
+  const formatTime = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds/3600);
+    const minutes = Math.floor((totalSeconds % 3600)/60);
+    const seconds = totalSeconds % 60;
+
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
   }
 
 
@@ -40,8 +68,8 @@ export default function DocumentHelperDashboard({file}) {
                 <input type='text' onChange={(e) => setQuestion(e.target.value)} placeholder='What would you like to know?'/> 
                 : 
                 <>
-                    <div className='timer'>hello</div>
-                    {!isRecording ? <button className='mic-icon'><FaMicrophone /></button> : <FaCircleStop className='mic-icon'/>} 
+                    <div className='timer'>{formatTime(seconds)}</div>
+                    {!isRecording ? <button className='mic-icon' onClick={handleStart}><FaMicrophone /></button>  : <button className='mic-icon' onClick={handleStop}><FaCircleStop/></button>} 
                 </>
                 }
 
