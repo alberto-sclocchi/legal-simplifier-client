@@ -7,6 +7,8 @@ import SimplifierContext from './context/SimplifierContext.context'
 
 export default function DocumentHelperDashboard({file}) {
 
+  let timer;
+
   const { getAnswer } = useContext(SimplifierContext)
 
   const hasTypedAnswer = useRef();
@@ -18,6 +20,13 @@ export default function DocumentHelperDashboard({file}) {
   const [ question, setQuestion ] = useState("");
   const [ isRecording, setIsRecording ] = useState(false);
   const [ seconds, setSeconds ] = useState(0);
+  const [recordedURL, setRecordedURL] = useState('');
+  const [ isWaiting, setIsWaiting ] = useState(false);
+
+
+  const mediaStream = useRef(null)
+  const mediaRecorder = useRef(null)
+  const chunks = useRef([])
 
 
   const handleClick = (event) => {
@@ -28,21 +37,55 @@ export default function DocumentHelperDashboard({file}) {
   }
 
 
-  const handleStart = (event) => {
+  const handleStart = async (event) => {
     event.preventDefault()
     setIsRecording(true);
-    setSeconds(0);
+    setIsWaiting(true);
 
-    const timer = setInterval(() => {
-      setSeconds((prevState) => prevState + 1);
-    }, 1000)
-    
+    try{
+      setSeconds(0)
+      const stream = await navigator.mediaDevices.getUserMedia({audio: true})
+      mediaStream.current = stream
+      mediaRecorder.current = new MediaRecorder(stream)
+      mediaRecorder.current.ondataavailable = (event) => {
+          if (event.data.size > 0){
+            console.log("chunks", event.data);
+            chunks.current.push(event.data)
+          }
+      }
+      
+      setTimeout(() => {
+        timer = setInterval(() => {
+          setSeconds(prev => prev + 1);
+        }, 1000)
 
-  }  
+        setIsWaiting(false);
+      }, 2200);
+
+      mediaRecorder.current.onstop = () => {
+          const recordedBlob = new Blob(chunks.current,{type: 'audio/webm'})
+          const url = URL.createObjectURL(recordedBlob)
+          setRecordedURL(url)
+
+          chunks.current = []
+          clearInterval(timer);
+      }
+
+      mediaRecorder.current.start()
+    } catch(error){
+      console.log(error);
+    }
+  }
   
   const handleStop = (event) => {
     event.preventDefault()
     setIsRecording(false);
+    setIsWaiting(false);
+
+    if(mediaRecorder.current){
+        mediaRecorder.current.stop()
+        mediaStream.current.getTracks().forEach(track => track.stop())
+    }
   }
 
   const formatTime = (totalSeconds) => {
@@ -68,13 +111,14 @@ export default function DocumentHelperDashboard({file}) {
                 <input type='text' onChange={(e) => setQuestion(e.target.value)} placeholder='What would you like to know?'/> 
                 : 
                 <>
-                    <div className='timer'>{formatTime(seconds)}</div>
+                    <div className='timer'>{!!isWaiting ? "Preparing..." : formatTime(seconds)}</div>
                     {!isRecording ? <button className='mic-icon' onClick={handleStart}><FaMicrophone /></button>  : <button className='mic-icon' onClick={handleStop}><FaCircleStop/></button>} 
                 </>
                 }
 
                 <button className='document-helper-btn' onClick={handleClick}>submit</button>
             </form>
+            {/* {!!recordedURL && <audio controls src={recordedURL} />} */}
         </div>
     </div>
   )
