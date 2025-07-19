@@ -8,7 +8,7 @@ import DocumentHelperDashboard from './DocumentHelperDashboard';
 
 export default function LegalSimplifier() {
 
-  const { setSimplifiedText, errorMessage, isLocked} = useContext(SimplifierContext);
+  const { setSimplifiedText, setAnswer, errorMessage, isLocked} = useContext(SimplifierContext);
   const [ file, setFile ] = useState(null);
   const [ display, setDisplay ] = useState({
     type: SimplifierModel.simplifier,
@@ -16,7 +16,10 @@ export default function LegalSimplifier() {
   });
 
   useEffect(() => {
-    if (!file) setSimplifiedText("");
+    if (!file) {
+      setSimplifiedText("");
+      setAnswer("");
+    }
     console.log("File changed: ", file);
   }, [file])
 
@@ -44,10 +47,10 @@ export default function LegalSimplifier() {
 
   return (
     <> 
-        {/* {
+        {
             isLocked &&
             <BlockScreen />
-        } */}
+        }
 
         <div className="legal-simplifier">
             <h1 className='title'>AI Legal Simplifier</h1>
@@ -68,7 +71,7 @@ export default function LegalSimplifier() {
                 <button className={`display-button ${display.index === 0 && "display-button-active"}`} onClick={() => setDisplay({type: SimplifierModel.simplifier, index: 0})}>Simplifier</button>
                 <button className={`display-button ${display.index === 1 && "display-button-active"}`} onClick={() => setDisplay({type: SimplifierModel.documentHelper, index: 1})}>Doc Helper</button>
             </div>
-            {(!!display && display.type === SimplifierModel.simplifier) ? <SimplifierDashboard file={file}/> : <DocumentHelperDashboard />}
+            {(!!display && display.type === SimplifierModel.simplifier) ? <SimplifierDashboard file={file}/> : <DocumentHelperDashboard file={file}/>}
         </div>
     </>
   )

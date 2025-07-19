@@ -21,6 +21,15 @@ export default class SimplifierService {
         });
     }
 
+    getAnswer(formData){
+        return this.service.post("/question", formData, {headers: { 'Content-Type': 'multipart/form-data'}}).then((response) => {
+            console.log("Response from SimplifierService:", response.data);
+            return response.data;
+        }).catch((error) => {
+            console.error("Error in SimplifierService:", error);
+        })
+    }   
+
     dowloadFile(fileName, originalName) { 
         return this.service.get(`/download/${fileName}`, {responseType: 'blob'})
             .then((response) => {
