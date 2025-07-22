@@ -1,4 +1,5 @@
 import axios from "axios";
+import { InputType } from "../model/InputType.model";
 
 
 
@@ -21,8 +22,10 @@ export default class SimplifierService {
         });
     }
 
-    getAnswer(formData){
-        return this.service.post("/question", formData, {headers: { 'Content-Type': 'multipart/form-data'}}).then((response) => {
+    getAnswer(formData, inputType){
+        console.log("tt", inputType)
+
+        return this.service.post(`/question/${inputType === InputType.text ? "text" : "audio"}`, formData, {headers: { 'Content-Type': 'multipart/form-data'}}).then((response) => {
             console.log("Response from SimplifierService:", response.data);
             return response.data;
         }).catch((error) => {

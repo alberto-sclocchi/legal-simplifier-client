@@ -22,6 +22,7 @@ export default function DocumentHelperDashboard({file}) {
   const [ seconds, setSeconds ] = useState(0);
   const [recordedURL, setRecordedURL] = useState('');
   const [ isWaiting, setIsWaiting ] = useState(false);
+  const [ fileAudio, setFileAudio ] = useState(null);
 
 
   const mediaStream = useRef(null)
@@ -33,7 +34,7 @@ export default function DocumentHelperDashboard({file}) {
     event.preventDefault();
 
     hasTypedAnswer.current = false;
-    getAnswer(question, file);
+    getAnswer(question, file, fileAudio, display.type);
   }
 
 
@@ -49,7 +50,7 @@ export default function DocumentHelperDashboard({file}) {
       mediaRecorder.current = new MediaRecorder(stream)
       mediaRecorder.current.ondataavailable = (event) => {
           if (event.data.size > 0){
-            console.log("chunks", event.data);
+            // console.log("chunks", event.data);
             chunks.current.push(event.data)
           }
       }
@@ -63,9 +64,13 @@ export default function DocumentHelperDashboard({file}) {
       }, 2200);
 
       mediaRecorder.current.onstop = () => {
-          const recordedBlob = new Blob(chunks.current,{type: 'audio/webm'})
+          const recordedBlob = new Blob(chunks.current,{type: 'audio/mp3'})
           const url = URL.createObjectURL(recordedBlob)
-          setRecordedURL(url)
+          setRecordedURL(url);
+
+          setFileAudio(recordedBlob);
+
+          console.log("blob", recordedBlob)
 
           chunks.current = []
           clearInterval(timer);

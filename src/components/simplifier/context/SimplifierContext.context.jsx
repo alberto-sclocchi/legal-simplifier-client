@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import SimplifierService from "../service/SimplifierService";
+import { InputType } from "../model/InputType.model";
 
 
 const SimplifierContext = createContext({});
@@ -70,7 +71,7 @@ export const SimplifierProvider = ({children}) => {
     }
 
 
-      const getAnswer = async (question, file) => {
+    const getAnswer = async (question, file, fileAudio, inputType) => {
         if(!file){
             setErrorMessage("File not uploaded. Please try again.");
 
@@ -82,13 +83,19 @@ export const SimplifierProvider = ({children}) => {
         }
 
         const formData = new FormData();
-        formData.append("pdfFile", file);
-        formData.append("question", question);
+
+        if(inputType === InputType.text) {
+            formData.append("pdfFile", file);
+            formData.append("question", question);
+        } else {
+            formData.append("audioFile", fileAudio);
+            formData.append("pdfFile", file);
+        }
         
         setLoading(true);
 
         try {
-            const response = await service.getAnswer(formData);
+            const response = await service.getAnswer(formData, inputType);
             setAnswer(response.answer);
         } catch (err) {
             console.log("Error fetching simplified text:", err);
