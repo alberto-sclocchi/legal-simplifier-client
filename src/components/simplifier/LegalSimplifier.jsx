@@ -5,6 +5,7 @@ import BlockScreen from '../core/BlockScreen';
 import SimplifierDashboard from './SimplifierDashboard';
 import { SimplifierModel } from './model/SimplifierModel.model';
 import DocumentHelperDashboard from './DocumentHelperDashboard';
+import Assistant from './Assistant';
 
 export default function LegalSimplifier() {
 
@@ -70,8 +71,14 @@ export default function LegalSimplifier() {
             <div className='display-buttons'>
                 <button className={`display-button ${display.index === 0 && "display-button-active"}`} onClick={() => setDisplay({type: SimplifierModel.simplifier, index: 0})}>Simplifier</button>
                 <button className={`display-button ${display.index === 1 && "display-button-active"}`} onClick={() => setDisplay({type: SimplifierModel.documentHelper, index: 1})}>Doc Helper</button>
+                <button className={`display-button ${display.index === 2 && "display-button-active"}`} onClick={() => setDisplay({type: SimplifierModel.assistant, index: 2})}>AI Assistant</button>
             </div>
-            {(!!display && display.type === SimplifierModel.simplifier) ? <SimplifierDashboard file={file}/> : <DocumentHelperDashboard file={file}/>}
+            {(!!display && display.type === SimplifierModel.simplifier) 
+              ? <SimplifierDashboard file={file}/> 
+              : (!!display && display.type === SimplifierModel.documentHelper) 
+              ? <DocumentHelperDashboard file={file}/>
+              : <Assistant />
+            }
         </div>
     </>
   )

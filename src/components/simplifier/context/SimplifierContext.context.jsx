@@ -82,6 +82,28 @@ export const SimplifierProvider = ({children}) => {
             return;
         }
 
+        if(inputType === InputType.text && !question){
+            setErrorMessage("Ask a question and try again.");
+
+            setTimeout(() => {
+                setErrorMessage(null)
+            }, 3000);
+
+            return;
+        }
+
+        if(inputType === InputType.audio && !fileAudio){
+            setErrorMessage("Record a question and try again.");
+
+            setTimeout(() => {
+                setErrorMessage(null)
+            }, 3000);
+
+            return;
+        }
+
+        console.log({question, file, fileAudio, inputType})
+
         const formData = new FormData();
 
         if(inputType === InputType.text) {

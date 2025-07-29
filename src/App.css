@@ -99,12 +99,11 @@ html{
   cursor: pointer;
 }
 
-.display-button:first-of-type{
+.display-button:first-child{
   border-radius: 8px 0px 0px 8px;
-  border-right: 0.2vw solid black;
 }
 
-.display-button:not(:first-of-type){
+.display-button:last-child{
   border-radius: 0px 8px 8px 0px;
 }
 

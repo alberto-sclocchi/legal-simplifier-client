@@ -23,8 +23,6 @@ export default class SimplifierService {
     }
 
     getAnswer(formData, inputType){
-        console.log("tt", inputType)
-
         return this.service.post(`/question/${inputType === InputType.text ? "text" : "audio"}`, formData, {headers: { 'Content-Type': 'multipart/form-data'}}).then((response) => {
             console.log("Response from SimplifierService:", response.data);
             return response.data;

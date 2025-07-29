@@ -61,7 +61,7 @@ export default function DocumentHelperDashboard({file}) {
         }, 1000)
 
         setIsWaiting(false);
-      }, 2200);
+      }, 2100);
 
       mediaRecorder.current.onstop = () => {
           const recordedBlob = new Blob(chunks.current,{type: 'audio/mp3'})

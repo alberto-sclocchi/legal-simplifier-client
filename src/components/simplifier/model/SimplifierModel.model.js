@@ -1,4 +1,6 @@
+
 export const SimplifierModel = {
     simplifier: "simplifier",
-    documentHelper: "documentHelper"
+    documentHelper: "documentHelper",
+    assistant: "assistant"
 }
