@@ -16,7 +16,8 @@ export const SimplifierProvider = ({children}) => {
     const [ loading, setLoading ] = useState(false);
     const [ isLocked, setIsLocked ] = useState(false);
     const [ errorMessage, setErrorMessage ] = useState(null);
-    const [ answer, setAnswer ] = useState("")
+    const [ answer, setAnswer ] = useState("");
+    const [ messages, setMessages ] = useState([]);
 
     const getSimplifiedText = async (file) => {
         if(!file){
@@ -126,8 +127,22 @@ export const SimplifierProvider = ({children}) => {
         }
     }
 
+    const getAssistantAnswer = async (question) => {
+        setMessages((prevState) => [...prevState, {type:"user", text: question}]);
+
+        try{
+            setLoading(true);
+            const assistantAnswer = await service.getAssistantResponse(question);
+            setMessages((prevState) => [...prevState, {type:"bot", text: assistantAnswer.answer}])
+        } catch(err){
+            console.log("Error: ", err)
+        } finally{
+            setLoading(false);
+        }
+    }
+
     return (
-    <SimplifierContext.Provider value={{simplifiedText, loading, getSimplifiedText, setSimplifiedText, fileOriginalName, unlockSimplifier, isLocked, errorMessage, answer, getAnswer, setAnswer}}>
+    <SimplifierContext.Provider value={{simplifiedText, loading, getSimplifiedText, setSimplifiedText, fileOriginalName, unlockSimplifier, isLocked, errorMessage, answer, getAnswer, setAnswer, getAssistantAnswer, messages}}>
       {children}
     </SimplifierContext.Provider>
     )

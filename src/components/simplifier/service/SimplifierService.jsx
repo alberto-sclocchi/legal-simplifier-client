@@ -46,5 +46,13 @@ export default class SimplifierService {
                 console.error("Error downloading file:", error);
             }
         ); 
-    }                                   
+    }        
+    
+    getAssistantResponse(question){
+        console.log(question);
+        return this.service.post("/assistant", {question}).then((response) => {
+            console.log("Response from SimplifierService:", response.data);
+            return response.data;
+        })
+    }
 }
