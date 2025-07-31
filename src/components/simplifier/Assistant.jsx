@@ -36,7 +36,7 @@ export default function Assistant() {
                     return <div className={`message message-${message.type}`} key={i}><div style={{fontStyle:"italic"}}>{message.type === 'user' ? "You" : "Assistant"}</div><Markdown>{message.text}</Markdown></div>
                 })
             }
-            {!!loading && <div className="message message-bot"><div style={{fontStyle:"italic"}}>Assistant</div>Thinking...</div>
+            {!!loading && <div className="message message-bot" style={{width:"50%"}}><div style={{fontStyle:"italic"}}>Assistant</div><p>Thinking...</p></div>
 }
         </div>  
         <form onSubmit={handleSubmit}>

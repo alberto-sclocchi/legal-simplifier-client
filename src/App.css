@@ -363,7 +363,7 @@ input:focus {
 .assistant-text-container{
   display: flex;
   flex-direction: column;
-  gap: 1vh;
+  gap: 1.5vh;
   font-family: 'Inter';
 }
 
